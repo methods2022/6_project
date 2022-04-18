@@ -22,7 +22,7 @@ TA2c = create_TA2C_from_file()
 
 function make_GET_req(url, body)
     header = ["Authorization"=>"Bearer "* TA2c["token"], "User-Agent"=>"Twitter-API-sample-code"]
-    return HTTP.request("GET", url, header, HTTP.Form(body))
+    return HTTP.request("GET", url, header, query=body)
 end
 
 query_params = Dict(
@@ -32,3 +32,6 @@ query_params = Dict(
 search_url = "https://api.twitter.com/2/tweets/search/recent"
 
 http_r = make_GET_req(search_url, query_params)
+
+print(http_r.status)
+print(String(http_r.body))
