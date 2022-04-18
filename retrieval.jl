@@ -1,6 +1,7 @@
+import Dates
+
 using HTTP
 using JSON
-
 
 function create_TA2C_from_file(filename::String = ".keys")::Dict
     keys = Dict()
@@ -18,20 +19,48 @@ function create_TA2C_from_file(filename::String = ".keys")::Dict
     return keys
 end
 
-TA2c = create_TA2C_from_file()
-
-function make_GET_req(url, body)
+function make_GET_req(url, body, TA2c)
     header = ["Authorization"=>"Bearer "* TA2c["token"], "User-Agent"=>"Twitter-API-sample-code"]
     return HTTP.request("GET", url, header, query=body)
 end
 
-query_params = Dict(
+function store_raw_data(drug_name, folder, date, url, body, TA2c)
+    filename = folder*drug_name*date
+    http_response = make_GET_req(url, body, TA2c)
+    json_data = JSON.parse(String(http_response.body))
+    open(filename,"w") do f 
+        JSON.print(f, json_data)
+    end
+end
+
+zoloft_query = Dict(
     "query"=>"zoloft",
     "tweet.fields"=>"author_id"
 )
+cymbalta_query = Dict(
+    "query"=>"cymbalta",
+    "tweet.fields"=>"author_id"
+)
+pristiq_query = Dict(
+    "query"=>"pristiq",
+    "tweet.fields"=>"author_id"
+)
+celexa_query = Dict(
+    "query"=>"celexa",
+    "tweet.fields"=>"author_id"
+)
+viibryd_query = Dict(
+    "query"=>"viibryd",
+    "tweet.fields"=>"author_id"
+)
+TA2c = create_TA2C_from_file()
 search_url = "https://api.twitter.com/2/tweets/search/recent"
+date = String(Dates.format(Dates.now(), "y-m-d"))
+folder = "raw-data/"
 
-http_r = make_GET_req(search_url, query_params)
 
-println(http_r.status)
-println(String(http_r.body))
+store_raw_data("zoloft-", folder, date, search_url, zoloft_query, TA2c)
+store_raw_data("cymbalta-", folder, date, search_url, cymbalta_query, TA2c)
+store_raw_data("pristiq-", folder, date, search_url, pristiq_query, TA2c)
+store_raw_data("celexa-", folder, date, search_url, celexa_query, TA2c)
+store_raw_data("viibryd-", folder, date, search_url, viibryd_query, TA2c)
