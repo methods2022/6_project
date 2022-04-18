@@ -33,5 +33,5 @@ search_url = "https://api.twitter.com/2/tweets/search/recent"
 
 http_r = make_GET_req(search_url, query_params)
 
-print(http_r.status)
-print(String(http_r.body))
+println(http_r.status)
+println(String(http_r.body))
