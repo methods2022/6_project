@@ -1,0 +1,17 @@
+import JSON
+
+s = read("data/raw-data/celexa-2-4-18", String)
+
+j = JSON.parse(s)
+
+open("tweets.txt", "w") do file
+	for tweet in j["data"]
+    		write(file, tweet["text"])
+		write(file, "\n\n\n")
+	end
+end
+
+for tweet in j["data"]
+	print(tweet["text"])
+	print("\n\n\n")
+end
