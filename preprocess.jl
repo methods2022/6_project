@@ -3,6 +3,11 @@ using TextAnalysis
 using CSV
 using DataFrames
 
+# Matthew: old Julia equiv. to python's ``import XYZ as X``
+# for the last little while, `using __: ABCD as A` works, but must be
+# single import... cannot an the entire module
+const TA = TextAnalysis
+
 
 raw_data_folder = "raw-data/"
 data_folder = "data/"
@@ -32,15 +37,21 @@ function get_raw_data_filepaths(drug_string, raw_folder, dict)
 end
 
 function process_tweet(tweet_string)
-    Sd = StringDocument(tweet_string)
-	remove_corrupt_utf8!(Sd)
-	remove_punctuation!(Sd)
-	remove_numbers!(Sd)
-	remove_stop_words!(Sd)
-	remove_articles!(Sd)
-	remove_indefinite_articles!(Sd)
-	remove_prepositions!(Sd)
-    lowercase(Sd)
+    # Matthew: lowercased before all TextAnalysis calls.
+    # Gave no thought to impacting the result, but fixes error
+    # and at face value shouldn't change anything.
+    Sd = StringDocument(lowercase(tweet_string))
+    # Matthew: in obsersvance of https://juliatext.github.io/TextAnalysis.jl/stable/documents/index.html
+    #TA.remove_corrupt_utf8!(Sd)
+    #TA.remove_punctuation!(Sd)
+    #TA.remove_numbers!(Sd)
+    #TA.remove_stop_words!(Sd)
+    #TA.remove_articles!(Sd)
+    #TA.remove_indefinite_articles!(Sd)
+    #TA.remove_prepositions!(Sd)
+    # can become below; a bit long, but is "up to date"
+    TA.prepare!(Sd, strip_corrupt_utf8| strip_punctuation| strip_numbers| strip_stopwords| strip_articles| strip_indefinite_articles| strip_prepositions)
+    #lowercase(Sd)
     return Sd
 end
 
@@ -55,7 +66,7 @@ function parse_to_textfile(drug_string, raw_datafilepath_list, data_folder)
         count = 1
         for data in j["data"]
             raw_tweet = data["text"]
-            #processed_tweet = process_tweet(raw_tweet)
+            processed_tweet = process_tweet(raw_tweet)
             storage = "$count|$raw_tweet\n" #TODO: ADD processed tweet here
             write(file, storage)
             count = count + 1
@@ -75,8 +86,11 @@ function convert_to_csv(drug_string, data_folder)
 end
 
 
-for drug in drug_list
-    get_raw_data_filepaths(drug, raw_data_folder, raw_data_filepaths)
-    parse_to_textfile(drug, raw_data_filepaths[drug], data_folder)
-    convert_to_csv(drug, data_folder)
-end
+get_raw_data_filepaths(drug_list[1], raw_data_folder, raw_data_filepaths)
+parse_to_textfile(drug_list[1], raw_data_filepaths[drug_list[1]], data_folder)
+convert_to_csv(drug_list[1], data_folder)
+#for drug in drug_list
+    #get_raw_data_filepaths(drug, raw_data_folder, raw_data_filepaths)
+    #parse_to_textfile(drug, raw_data_filepaths[drug], data_folder)
+    #convert_to_csv(drug, data_folder)
+#end
