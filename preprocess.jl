@@ -5,7 +5,6 @@ using DataFrames
 
 const txtanalysis = TextAnalysis
 
-
 raw_data_folder = "raw-data/"
 data_folder = "data/"
 drug_list = ["zoloft", "cymbalta", "pristiq", "celexa", "viibryd"]
@@ -34,16 +33,15 @@ function get_raw_data_filepaths(drug_string, raw_folder, dict)
 end
 
 function process_tweet(tweet_string)
+    #txtanalysis.remove_corrupt_utf8!(Sd)
+    #txtanalysis.remove_punctuation!(Sd)
+    #txtanalysis.remove_numbers!(Sd)
+    #txtanalysis.remove_stop_words!(Sd)
+    #txtanalysis.remove_articles!(Sd)
+    #txtanalysis.remove_indefinite_articles!(Sd)
+    #txtanalysis.remove_prepositions!(Sd)
+    
     Sd = StringDocument(lowercase(tweet_string))
-        
-    #TA.remove_corrupt_utf8!(Sd)
-    #TA.remove_punctuation!(Sd)
-    #TA.remove_numbers!(Sd)
-    #TA.remove_stop_words!(Sd)
-    #TA.remove_articles!(Sd)
-    #TA.remove_indefinite_articles!(Sd)
-    #TA.remove_prepositions!(Sd)
-    # can become below; a bit long, but is "up to date"
     txtanalysis.prepare!(Sd, strip_corrupt_utf8| strip_punctuation| strip_numbers| strip_stopwords| strip_articles| strip_indefinite_articles| strip_prepositions)
     return Sd
 end
