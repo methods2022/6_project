@@ -3,10 +3,7 @@ using TextAnalysis
 using CSV
 using DataFrames
 
-# Matthew: old Julia equiv. to python's ``import XYZ as X``
-# for the last little while, `using __: ABCD as A` works, but must be
-# single import... cannot an the entire module
-const TA = TextAnalysis
+const txtanalysis = TextAnalysis
 
 
 raw_data_folder = "raw-data/"
@@ -37,11 +34,8 @@ function get_raw_data_filepaths(drug_string, raw_folder, dict)
 end
 
 function process_tweet(tweet_string)
-    # Matthew: lowercased before all TextAnalysis calls.
-    # Gave no thought to impacting the result, but fixes error
-    # and at face value shouldn't change anything.
     Sd = StringDocument(lowercase(tweet_string))
-    # Matthew: in obsersvance of https://juliatext.github.io/TextAnalysis.jl/stable/documents/index.html
+        
     #TA.remove_corrupt_utf8!(Sd)
     #TA.remove_punctuation!(Sd)
     #TA.remove_numbers!(Sd)
@@ -50,8 +44,7 @@ function process_tweet(tweet_string)
     #TA.remove_indefinite_articles!(Sd)
     #TA.remove_prepositions!(Sd)
     # can become below; a bit long, but is "up to date"
-    TA.prepare!(Sd, strip_corrupt_utf8| strip_punctuation| strip_numbers| strip_stopwords| strip_articles| strip_indefinite_articles| strip_prepositions)
-    #lowercase(Sd)
+    txtanalysis.prepare!(Sd, strip_corrupt_utf8| strip_punctuation| strip_numbers| strip_stopwords| strip_articles| strip_indefinite_articles| strip_prepositions)
     return Sd
 end
 
