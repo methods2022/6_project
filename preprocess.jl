@@ -33,17 +33,9 @@ function get_raw_data_filepaths(drug_string, raw_folder, dict)
 end
 
 function process_tweet(tweet_string)
-    #txtanalysis.remove_corrupt_utf8!(Sd)
-    #txtanalysis.remove_punctuation!(Sd)
-    #txtanalysis.remove_numbers!(Sd)
-    #txtanalysis.remove_stop_words!(Sd)
-    #txtanalysis.remove_articles!(Sd)
-    #txtanalysis.remove_indefinite_articles!(Sd)
-    #txtanalysis.remove_prepositions!(Sd)
-    
     Sd = StringDocument(lowercase(tweet_string))
     txtanalysis.prepare!(Sd, strip_corrupt_utf8| strip_punctuation| strip_numbers| strip_stopwords| strip_articles| strip_indefinite_articles| strip_prepositions)
-    return Sd
+    return text(Sd)
 end
 
 function parse_to_textfile(drug_string, raw_datafilepath_list, data_folder)
