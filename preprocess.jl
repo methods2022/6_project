@@ -7,7 +7,7 @@ const txtanalysis = TextAnalysis
 
 raw_data_folder = "raw-data/"
 data_folder = "data/"
-drug_list = ["zoloft", "cymbalta", "pristiq", "celexa", "viibryd"]
+drug_list = ["zoloft", "cymbalta", "celexa", "viibryd"] #TODO: add "pristiq".
 raw_data_filepaths = Dict(
     "zoloft"=>[],
     "cymbalta"=>[],
@@ -47,23 +47,22 @@ end
 function parse_to_textfile(drug_string, raw_datafilepath_list, data_folder)
     header = "count|raw_tweet|processed_tweet\n"
     output_file = data_folder*data_text_outputpaths[drug_string]
-   for input_file in raw_datafilepath_list
-    s = read("$input_file", String)
-    j = JSON.parse(s)
     open(output_file, "w") do file
         write(file, header)
-        count = 1
-        for data in j["data"]
-            raw_tweet = prepare_for_print(data["text"])
-            processed_tweet = prepare_for_print(process_tweet(raw_tweet))
-            storage = "$count|$raw_tweet|$processed_tweet\n"
-            write(file, storage)
-            count = count + 1
+        for input_file in raw_datafilepath_list
+            s = read("$input_file", String)
+            j = JSON.parse(s)
+            count = 1
+            for data in j["data"]
+                raw_tweet = prepare_for_print(data["text"])
+                processed_tweet = prepare_for_print(process_tweet(raw_tweet))
+                storage = "$count|$raw_tweet|$processed_tweet\n"
+                write(file, storage)
+                count = count + 1
+            end
         end
     end
-    end
 end
-
 
 
 function convert_to_csv(drug_string, data_folder)
