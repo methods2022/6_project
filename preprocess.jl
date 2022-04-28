@@ -38,8 +38,14 @@ function process_tweet(tweet_string)
     return text(Sd)
 end
 
+function prepare_for_print(s)
+    s =  replace(s, "|"=>"")
+    s = replace(s, "\n"=>"")
+    return s
+end
+
 function parse_to_textfile(drug_string, raw_datafilepath_list, data_folder)
-    header = "count|raw_tweet|processed_tweet"
+    header = "count|raw_tweet|processed_tweet\n"
     output_file = data_folder*data_text_outputpaths[drug_string]
    for input_file in raw_datafilepath_list
     s = read("$input_file", String)
@@ -48,9 +54,9 @@ function parse_to_textfile(drug_string, raw_datafilepath_list, data_folder)
         write(file, header)
         count = 1
         for data in j["data"]
-            raw_tweet = data["text"]
-            processed_tweet = process_tweet(raw_tweet)
-            storage = "$count|$raw_tweet\n" #TODO: ADD processed tweet here
+            raw_tweet = prepare_for_print(data["text"])
+            processed_tweet = prepare_for_print(process_tweet(raw_tweet))
+            storage = "$count|$raw_tweet|$processed_tweet\n"
             write(file, storage)
             count = count + 1
         end
@@ -69,11 +75,8 @@ function convert_to_csv(drug_string, data_folder)
 end
 
 
-get_raw_data_filepaths(drug_list[1], raw_data_folder, raw_data_filepaths)
-parse_to_textfile(drug_list[1], raw_data_filepaths[drug_list[1]], data_folder)
-convert_to_csv(drug_list[1], data_folder)
-#for drug in drug_list
-    #get_raw_data_filepaths(drug, raw_data_folder, raw_data_filepaths)
-    #parse_to_textfile(drug, raw_data_filepaths[drug], data_folder)
-    #convert_to_csv(drug, data_folder)
-#end
+for drug in drug_list
+    get_raw_data_filepaths(drug, raw_data_folder, raw_data_filepaths)
+    parse_to_textfile(drug, raw_data_filepaths[drug], data_folder)
+    convert_to_csv(drug, data_folder)
+end
