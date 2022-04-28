@@ -49,10 +49,10 @@ function parse_to_textfile(drug_string, raw_datafilepath_list, data_folder)
     output_file = data_folder*data_text_outputpaths[drug_string]
     open(output_file, "w") do file
         write(file, header)
+        count = 1
         for input_file in raw_datafilepath_list
             s = read("$input_file", String)
             j = JSON.parse(s)
-            count = 1
             for data in j["data"]
                 raw_tweet = prepare_for_print(data["text"])
                 processed_tweet = prepare_for_print(process_tweet(raw_tweet))
