@@ -1,21 +1,25 @@
-import pandas as pd
-import sys
 import os
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 
 _DRUGS_DIR = 'data/'
-_ENDPOINT = ''
-_KEY = ''
+_ENDPOINT = '!!!ADD HERE!!!'
+_KEY = '!!!ADD HERE!!!'
 _BATCH_SIZE = 10
 
-def get_drug_csv_filepaths(drug):
-    file = drug+".csv"
+def get_data_filepaths(drug):
+    file = drug+".txt"
     return os.path.join(_DRUGS_DIR, file)
 
 def get_raw_tweets(filepath):
-    df = pd.read_csv(filepath)
-    return df['raw_tweet'].to_list()
+    raw_tweets = []
+    datafile = open(filepath, 'r')
+    for line in datafile.readlines():
+        raw_tweet = line.split('|')[1]
+        if raw_tweet == "raw_tweet":
+            continue
+        raw_tweets.append(raw_tweet)
+    return raw_tweets
 
 def sentiment_analysis(client, documents):
     size = len(documents)
@@ -28,16 +32,14 @@ def sentiment_analysis(client, documents):
             sentiments[doc.sentiment] += 1
     return sentiments
 
-def main(args):
-    if len(args) != 2:
-        print("Run script as: sentiment_analysis_azure.py <drug_name>")
-        return
-    drug = args[1]
-    filepath = get_drug_csv_filepaths(drug)
-    raw_tweets = get_raw_tweets(filepath)
-    text_analytics_client = TextAnalyticsClient(endpoint=_ENDPOINT, credential=AzureKeyCredential(_KEY))
-    sentiments = sentiment_analysis(text_analytics_client, raw_tweets)
-    print(f'{drug} sentiment results: {sentiments}')
+def main():
+    drug_list = ["zoloft", "cymbalta", "celexa", "viibryd", "pristiq"]
+    for drug in drug_list:
+        filepath = get_data_filepaths(drug)
+        raw_tweets = get_raw_tweets(filepath)
+        text_analytics_client = TextAnalyticsClient(endpoint=_ENDPOINT, credential=AzureKeyCredential(_KEY))
+        sentiments = sentiment_analysis(text_analytics_client, raw_tweets)
+        print(f'{drug} sentiment results: {sentiments}')
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main()
