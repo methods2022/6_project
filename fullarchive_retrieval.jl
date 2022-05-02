@@ -5,23 +5,28 @@ using JSON
 
 zoloft_query = Dict(
     "query"=>"zoloft",
-    "tweet.fields"=>"author_id"
+    "tweet.fields"=>"author_id",
+    "max_results"=>500,
 )
 cymbalta_query = Dict(
     "query"=>"cymbalta",
-    "tweet.fields"=>"author_id"
+    "tweet.fields"=>"author_id",
+    "max_results"=>500,
 )
 pristiq_query = Dict(
     "query"=>"pristiq",
-    "tweet.fields"=>"author_id"
+    "tweet.fields"=>"author_id",
+    "max_results"=>500,
 )
 celexa_query = Dict(
     "query"=>"celexa",
-    "tweet.fields"=>"author_id"
+    "tweet.fields"=>"author_id",
+    "max_results"=>500,
 )
 viibryd_query = Dict(
-    "query"=>"viibryd",
-    "tweet.fields"=>"author_id"
+    "query" => "viibryd",
+    "tweet.fields" => "author_id",
+    "max_results" => 500,
 )
 search_url = "https://api.twitter.com/2/tweets/search/all"
 storage = "fullarchive"

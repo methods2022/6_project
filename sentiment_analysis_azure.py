@@ -17,11 +17,6 @@ def get_raw_tweets(filepath):
     df = pd.read_csv(filepath)
     return df['raw_tweet'].to_list()
 
-def get_processed_tweets(filepath):
-    df = pd.read_csv(filepath)
-    return df['processed_tweet'].to_list()
-
-
 def sentiment_analysis(client, documents):
     size = len(documents)
     sentiments = {}
