@@ -1,6 +1,10 @@
 using VaderSentiment
 analyzer = VaderSentiment.SentimentIntensityAnalyzer
 
+
+# input file 
+# remove first row of the input file 
+
 function main() 
     str_list = String["zoloft", "cymblata", "pristiq", "celexa", "viibryd"]
     drug_dict = Dict()
