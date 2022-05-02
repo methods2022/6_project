@@ -47,6 +47,7 @@ end
 function parse_to_textfile(drug_string, raw_datafilepath_list, data_folder)
     header = "count|raw_tweet|processed_tweet\n"
     output_file = data_folder*data_text_outputpaths[drug_string]
+    check_repeat = Set()
     open(output_file, "w") do file
         write(file, header)
         count = 1
@@ -57,24 +58,17 @@ function parse_to_textfile(drug_string, raw_datafilepath_list, data_folder)
                 raw_tweet = prepare_for_print(data["text"])
                 processed_tweet = prepare_for_print(process_tweet(raw_tweet))
                 storage = "$count|$raw_tweet|$processed_tweet\n"
-                write(file, storage)
-                count = count + 1
+                if !(raw_tweet in check_repeat)
+                    write(file, storage)
+                    count = count + 1
+                end
+                push!(check_repeat, raw_tweet)
             end
         end
     end
 end
 
-"""
-function convert_to_csv(drug_string, data_folder)
-    filename = data_folder*data_text_outputpaths[drug_string]
-    println(filename)
-    b_df = CSV.File(filename, header=1, footerskip=0, delim="|") |> DataFrame
-    CSV.write(data_folder*drug_string*".csv", b_df)
-end
-"""
-
 for drug in drug_list
     get_raw_data_filepaths(drug, raw_data_folder, raw_data_filepaths)
     parse_to_textfile(drug, raw_data_filepaths[drug], data_folder)
-    #convert_to_csv(drug, data_folder)
 end
