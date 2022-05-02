@@ -7,7 +7,7 @@ const txtanalysis = TextAnalysis
 
 raw_data_folder = "raw-data/"
 data_folder = "data/"
-drug_list = ["zoloft", "cymbalta", "celexa", "viibryd"] #TODO: add "pristiq".
+drug_list = ["zoloft", "cymbalta", "celexa", "viibryd", "pristiq"]
 raw_data_filepaths = Dict(
     "zoloft"=>[],
     "cymbalta"=>[],
