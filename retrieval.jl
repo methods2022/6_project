@@ -35,23 +35,28 @@ end
 
 zoloft_query = Dict(
     "query"=>"zoloft",
-    "tweet.fields"=>"author_id"
+    "tweet.fields"=>"author_id",
+    "max_results"=>100,
 )
 cymbalta_query = Dict(
     "query"=>"cymbalta",
-    "tweet.fields"=>"author_id"
+    "tweet.fields"=>"author_id",
+    "max_results"=>100,
 )
 pristiq_query = Dict(
     "query"=>"pristiq",
-    "tweet.fields"=>"author_id"
+    "tweet.fields"=>"author_id",
+    "max_results"=>100,
 )
 celexa_query = Dict(
     "query"=>"celexa",
-    "tweet.fields"=>"author_id"
+    "tweet.fields"=>"author_id",
+    "max_results"=>100,
 )
 viibryd_query = Dict(
     "query"=>"viibryd",
-    "tweet.fields"=>"author_id"
+    "tweet.fields"=>"author_id",
+    "max_results"=>100
 )
 TA2c = create_TA2C_from_file()
 search_url = "https://api.twitter.com/2/tweets/search/recent"
