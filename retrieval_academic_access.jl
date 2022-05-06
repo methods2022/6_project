@@ -3,6 +3,8 @@ import Dates
 using HTTP
 using JSON
 
+BEARER_TOKEN = "!!!PASTE HERE!!!"
+
 zoloft_query = Dict(
     "query"=>"zoloft",
     "tweet.fields"=>"author_id",
@@ -52,8 +54,7 @@ function store_raw_data(drug_name, folder, storage, url, body, TA2c)
     end
 end
 
-println("PLEASE ENTER BEARER TOKEN: ")
-TA2c = process_token(readline(stdin))
+TA2c = process_token(BEARER_TOKEN)
 store_raw_data("zoloft-", folder, storage, search_url, zoloft_query, TA2c)
 store_raw_data("cymbalta-", folder, storage, search_url, cymbalta_query, TA2c)
 store_raw_data("pristiq-", folder, storage, search_url, pristiq_query, TA2c)

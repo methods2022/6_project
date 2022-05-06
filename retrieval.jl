@@ -3,21 +3,7 @@ import Dates
 using HTTP
 using JSON
 
-function create_TA2C_from_file(filename::String = ".keys")::Dict
-    keys = Dict()
-  
-    isfile(filename) || exit("File not found: " + filename)
-  
-    open(filename) do f
-        for line in eachline(f)
-            line = strip(line)
-            array = split(line, "=")
-            keys[array[1]] = strip(array[2])
-        end
-    end
-
-    return keys
-end
+BEARER_TOKEN = "!!!PASTE HERE!!!"
 
 function make_GET_req(url, body, TA2c)
     header = ["Authorization"=>"Bearer "* TA2c["token"], "User-Agent"=>"Twitter-API-sample-code"]
@@ -31,6 +17,12 @@ function store_raw_data(drug_name, folder, date, url, body, TA2c)
     open(filename,"w") do f 
         JSON.print(f, json_data)
     end
+end
+
+function process_token(s)
+    keys = Dict()
+    keys["token"] = strip(s)
+    return keys
 end
 
 zoloft_query = Dict(
@@ -58,7 +50,7 @@ viibryd_query = Dict(
     "tweet.fields"=>"author_id",
     "max_results"=>100
 )
-TA2c = create_TA2C_from_file()
+TA2c = process_token(BEARER_TOKEN)
 search_url = "https://api.twitter.com/2/tweets/search/recent"
 date = String(Dates.format(Dates.now(), "y-m-d"))
 folder = "raw-data/"
