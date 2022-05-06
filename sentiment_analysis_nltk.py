@@ -20,16 +20,14 @@ from nltk.stem import SnowballStemmer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import CountVectorizer
 
-
 # Here is the fetching of the raw data
 #file_path="/gpfs/data/biol1555/projects2022/team06/6_project/data/celexa.txt"
 #processed_data = open(file_path,'r')#,encoding="utf-8")
-
-
+anaylsis_output_file = 'visualization/nltk_analysis_output.txt'
 
 def get_data_filepaths(drug):
     file = drug+".txt"
-    return os.path.join('/gpfs/data/biol1555/projects2022/team06/6_project/data/', file)
+    return os.path.join('data/', file)
 
 def get_raw_tweets(filepath):
     raw_tweets = []
