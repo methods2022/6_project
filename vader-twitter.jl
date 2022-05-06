@@ -31,8 +31,7 @@ function iterate_over_all_drugs(output_filename)
 
     output_file = open(output_filename, "w")
     for data_path in data_text_paths
-        #input_path = data_folder*data_path
-        input_path = "twitter-example.txt"
+        input_path = data_folder*data_path
         tweets = process_input(input_path)
         score = analyze(tweets)
         drug_name = split(data_path, ".")[1]
