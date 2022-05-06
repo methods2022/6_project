@@ -1,0 +1,6 @@
+drug_name|num_of_tweets|num_positive|num_negative|num_neutral|num_mixed
+zoloft|566|97|240|165|64
+cymbalta|502|88|229|97|88
+celexa|472|100|151|124|97
+viibryd|59|16|22|9|12
+pristiq|208|44|67|66|31
