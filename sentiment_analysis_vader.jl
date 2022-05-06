@@ -1,7 +1,6 @@
 using VaderSentiment
 analyzer = VaderSentiment.SentimentIntensityAnalyzer
 
-
 function process_input(input_filename)
     input_file = open(input_filename, "r")
     line_count = 0
@@ -13,10 +12,8 @@ function process_input(input_filename)
         if line_count == 1
             continue
         end
-        
         # split line
         line_part_array = split(line,"|")
-
         # retrieve processed tweet
         push!(all_tweets, line_part_array[3])
     end 
@@ -30,12 +27,13 @@ function iterate_over_all_drugs(output_filename)
     data_text_paths = ["zoloft.txt", "cymbalta.txt", "pristiq.txt", "celexa.txt", "viibryd.txt"]
 
     output_file = open(output_filename, "w")
+    write(output_file, "drug|size|sum_neg|sum_neu|sum_pos|sum_compound\n")
     for data_path in data_text_paths
         input_path = data_folder*data_path
         tweets = process_input(input_path)
-        score = analyze(tweets)
-        drug_name = split(data_path, ".")[1]
-        write(output_file, "$drug_name score: $score\n")
+        size, sum_neg, sum_neu, sum_pos, sum_compound = analyze(tweets)
+        drug = split(data_path, ".")[1]
+        write(output_file, "$drug|$size|$sum_neg|$sum_neu|$sum_pos|$sum_compound\n")
     end
     close(output_file)
 end 
@@ -47,25 +45,14 @@ function analyze(str_list)
     sum_neu = 0.0
     sum_pos = 0.0
     sum_compound = 0.0
-
-    # compute the average of the values in 100 dictionaries
     for i in 1:size
         vs = analyzer(str_list[i]).polarity_scores
         sum_neg += vs["neg"]
         sum_neu += vs["neu"]
         sum_pos += vs["pos"]
         sum_compound += vs["compound"]
-    end 
-
-    average_neg = sum_neg / size
-    average_neu = sum_neu / size
-    average_pos = sum_pos / size
-
-    average_compound = sum_compound / size
-    return average_compound
+    end
+    return size, sum_neg, sum_neu, sum_pos, sum_compound
 end
 
-
-# puts everything together
-iterate_over_all_drugs("vader_julia_output.txt")
-# analyze(process_input("twitter-example.txt")) - for testing 
+iterate_over_all_drugs("visualization/vader_anaylsis_output.txt")
