@@ -1,0 +1,5 @@
+zoloft|197|196|173
+cymbalta|185|220|97
+celexa|203|155|114
+viibryd|30|20|9
+pristiq|76|59|73
