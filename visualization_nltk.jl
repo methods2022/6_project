@@ -1,24 +1,26 @@
-using PyPlot
+using StatsPlots
 
-VISUALIZATION_DIR = "visualization/"
 VISUALIZATION_ANALYSIS_FILE = "visualization/nltk_analysis_output.txt"
 
 input = open("visualization/nltk_analysis_output.txt", "r")
 
+drugs = ["zoloft", "cymbalta", "celexa", "viibryd", "pristiq"]
 xlab = ["positive", "negative", "neutral"]
 
-for line in readlines(input)
+data = Dict()
+
+for line in eachline(input)
     
     array = split(line, "|")
+    data[array[1]] = [parse(Int, array[2]), parse(Int, array[3]), parse(Int, array[4])]
 
-    data = [parse(Int, array[2]), parse(Int, array[3]), parse(Int, array[4])]
+end
 
-    drug = array[1]
+for drug in drugs
 
-    b = bar(xlab, data, align="center", color= ["blue","orange","green"],alpha=0.4)
-    PyPlot.title("$drug Tweet Sentiment Analysis by NLTK")
-    output_file = VISUALIZATION_DIR*"$(drug)_nltk_python.png"
+    values = data[drug]
 
-    plt.savefig(output_file)
+    bar(values, xticks=(1:3, xlab), color = [:blue, :orange, :green])
+    savefig("visualization/$(drug)_nltk_python.png")
 
 end
