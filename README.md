@@ -27,6 +27,8 @@ Packages Required
 
 Retrieval
 
+In order to run the retrieval scripts, please first set up your [Twitter API account](https://developer.twitter.com/en/docs/twitter-api/getting-started/getting-access-to-the-twitter-api). 
+
 Processing
 
 Analysis
