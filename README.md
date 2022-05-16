@@ -4,7 +4,25 @@ The following directory explores our research, which asks if and how Twitter dat
 
 Packages Required
     Julia:
+        - StatsPlots
+        - PyPlot
+        - PyCall
+        - VaderSentiment
+        - HTTP
+        - JSON
+        - CSV
+        - DataFrames
+        - TextAnalysis
+  
     Python:
+        - sys
+        - matplotlib.pyplot
+        - pandas
+        - numpy
+        - vaderSentiment
+        - azure.core.credentials, AzureKeyCredential
+        - azure.ai.textanalytics, TextAnalyticsClient
+    
 
 Retrieval
 
