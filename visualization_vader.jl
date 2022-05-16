@@ -23,10 +23,10 @@ function process_input(input_filename, drugs)
         # split line
         line_part_array = split(line,"|")
 
-        push!(list_for_this_drug, parse(Int, line_part_array[5])) # pos 
-        push!(list_for_this_drug, parse(Int, line_part_array[3])) # neg 
-        push!(list_for_this_drug, parse(Int, line_part_array[4])) # neu 
-        push!(list_for_this_drug, parse(Int, line_part_array[6])) # compound 
+        push!(list_for_this_drug, parse(Float64, line_part_array[5])) # pos 
+        push!(list_for_this_drug, parse(Float64, line_part_array[3])) # neg 
+        push!(list_for_this_drug, parse(Float64, line_part_array[4])) # neu 
+        push!(list_for_this_drug, parse(Float64, line_part_array[6])) # compound 
 
         drugs[line_part_array[1]] = list_for_this_drug
         sizes[line_part_array[1]] = parse(Int, line_part_array[2])

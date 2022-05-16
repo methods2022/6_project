@@ -55,4 +55,4 @@ function analyze(str_list)
     return size, sum_neg, sum_neu, sum_pos, sum_compound
 end
 
-iterate_over_all_drugs("visualization/vader_anaylsis_output.txt")
+iterate_over_all_drugs("visualization/vader_analysis_output.txt")
