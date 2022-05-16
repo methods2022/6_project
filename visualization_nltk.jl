@@ -15,9 +15,9 @@ for line in readlines(input)
 
     drug = array[1]
 
-    b = bar(xlab,data, align="center", color= ["blue","orange","green"],alpha=0.4)
+    b = bar(xlab, data, align="center", color= ["blue","orange","green"],alpha=0.4)
     PyPlot.title("$drug Tweet Sentiment Analysis by NLTK")
-    output_file = "$(drug)_nltk_python.png"
+    output_file = VISUALIZATION_DIR*"$(drug)_nltk_python.png"
 
     plt.savefig(output_file)
 
