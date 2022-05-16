@@ -38,11 +38,11 @@ def sentiment_analysis(df):
 
 def main():
 
-    output = open("nltk_analysis_output.txt", "w")
+    output = open("visualization/nltk_analysis_output.txt", "w")
     drug_list = ["zoloft", "cymbalta", "celexa", "viibryd", "pristiq"]
     for drug in drug_list:
 
-        filepath = "~/Desktop/" + drug + ".txt"
+        filepath = "data/" + drug + ".txt"
         my_data = pd.read_csv(filepath, sep="|")
 
         pos, neg, neu = sentiment_analysis(my_data)
